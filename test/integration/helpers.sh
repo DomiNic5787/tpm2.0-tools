@@ -270,6 +270,9 @@ function start_up() {
     else
         if [ -n "$TPM2_DEVICE" ]; then
             export TPM2TOOLS_TCTI="device:$TPM2_DEVICE"
+        elif dbus-send --system --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames | grep com.intel.tss2.Tabrmd
+            local name="com.intel.tss2.Tabrmd.device"
+            export TPM2TOOLS_TCTI="abrmd:bus_type=system,bus_name=$name"
         else
             export TPM2TOOLS_TCTI="device"
         fi
